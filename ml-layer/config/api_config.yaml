@@ -1,0 +1,3 @@
+service:
+  name: nari-kawach-ml
+  version: 1.0.0
