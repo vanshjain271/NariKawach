@@ -1,0 +1,48 @@
+api:
+  version: "2.0.0"
+  title: "SHIELD AI Safety API"
+  description: "AI/ML backend for women's safety system"
+  contact:
+    name: "SHIELD Team"
+    email: "contact@shield-safety.com"
+  
+endpoints:
+  health:
+    path: "/health"
+    method: "GET"
+    description: "Health check endpoint"
+  
+  risk_assessment:
+    path: "/assess-risk"
+    method: "POST"
+    description: "Comprehensive risk assessment"
+  
+  anomalies:
+    path: "/detect-anomalies"
+    method: "POST"
+    description: "Route anomaly detection"
+  
+  stalking_check:
+    path: "/stalking-check"
+    method: "POST"
+    description: "Stalking pattern detection"
+  
+  intervention:
+    path: "/get-intervention"
+    method: "POST"
+    description: "Intelligent intervention decision"
+
+rate_limits:
+  default: "100/minute"
+  risk_assessment: "60/minute"
+  emergency: "1000/minute"
+
+cache:
+  risk_scores: "300"  # 5 minutes
+  user_profiles: "3600"  # 1 hour
+  model_predictions: "600"  # 10 minutes
+
+monitoring:
+  metrics_path: "/metrics"
+  health_check_interval: "30s"
+  log_level: "INFO"
