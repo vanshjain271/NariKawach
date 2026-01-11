@@ -1,0 +1,8 @@
+from fastapi import FastAPI
+from src.api.endpoints import router
+from src.api.middleware import AuthMiddleware
+
+app = FastAPI(title="Nari Kawach ML Service")
+
+app.add_middleware(AuthMiddleware)
+app.include_router(router)
