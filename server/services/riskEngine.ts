@@ -1,22 +1,37 @@
-export function calculateRisk(data: any) {
-  const {
-    crimeDensity,
-    crowdDensity,
-    lightingScore,
-    hour
-  } = data;
+import axios from "axios";
 
-  let score = 0;
+const ML_URL = process.env.ML_SERVICE_URL;
+const ML_API_KEY = process.env.ML_API_KEY;
 
-  score += crimeDensity * 0.4;
-  score += (10 - crowdDensity) * 0.2;
-  score += (10 - lightingScore) * 0.2;
+if (!ML_URL || !ML_API_KEY) {
+  throw new Error("❌ ML service environment variables not configured");
+}
 
-  if (hour >= 20 || hour <= 5) score += 2;
+export async function calculateRisk(payload: {
+  user_id: string;
+  crimeDensity: number;
+  crowdDensity: number;
+  lightingScore: number;
+  hour: number;
+}) {
+  const mlPayload = {
+    user_id: payload.user_id,
+    current_location: { lat: 0, lng: 0 },
+    route: [],
+    time: { hour: payload.hour, day: "Monday" },
+    crime_density: payload.crimeDensity,
+    crowd_density: payload.crowdDensity,
+    lighting_score: payload.lightingScore,
+    speed: 1.0,
+    route_deviation_score: 0.3
+  };
 
-  let risk_level = "Low";
-  if (score > 6) risk_level = "High";
-  else if (score > 3) risk_level = "Medium";
+  const response = await axios.post(ML_URL, mlPayload, {
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": ML_API_KEY
+    }
+  });
 
-  return { risk_level, score };
+  return response.data;
 }

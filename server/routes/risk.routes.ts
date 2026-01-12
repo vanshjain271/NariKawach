@@ -26,12 +26,18 @@ router.post("/calculate", async (req, res) => {
 
     const { user_id, crimeDensity, crowdDensity, lightingScore, hour } = validation.data;
 
-    const result = calculateRisk({ crimeDensity, crowdDensity, lightingScore, hour });
+    const result = await calculateRisk({
+        user_id,
+        crimeDensity,
+        crowdDensity,
+        lightingScore,
+        hour
+    });
 
     await supabase.from("risk_status").upsert({
         user_id,
         risk_level: result.risk_level,
-        reason: `Score: ${result.score.toFixed(2)}`
+        reason: result.reason
     });
 
     if (result.risk_level === "High") {
