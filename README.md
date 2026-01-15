@@ -118,7 +118,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 - Privacy by Default – No background tracking, no surveillance
 
-## Planned Enhancements (Post-Hackathon)
+## Future Plan
 
 - These features are intentionally scoped out of the hackathon build to ensure stability and ethical deployment:
 
@@ -135,3 +135,12 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ## Final Note
 
 This project demonstrates a complete, extensible safety workflow with strong UX, ethical design, and clear separation of concerns between frontend, backend, and AI components.
+
+## Team Members:
+
+1️⃣ [@vanshjain271](https://github.com/vanshjain271)
+2️⃣ [@Prince-Koladiya09](https://github.com/Prince-Koladiya09)
+3️⃣ [@MeetRvyas](https://github.com/MeetRvyas)
+4️⃣ [@AnshMNSoni](https://github.com/AnshMNSoni)
+
+## Thankyou
