@@ -4,5 +4,13 @@ from src.api.middleware import AuthMiddleware
 
 app = FastAPI(title="Nari Kawach ML Service")
 
+# ✅ Public health route (NO auth)
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+# Middleware
 app.add_middleware(AuthMiddleware)
+
+# API routes
 app.include_router(router)
