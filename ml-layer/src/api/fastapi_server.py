@@ -13,4 +13,6 @@ def health():
 app.add_middleware(AuthMiddleware)
 
 # API routes
-app.include_router(router)
+from config.settings import settings
+
+app.include_router(router, prefix=settings.API_PREFIX)
