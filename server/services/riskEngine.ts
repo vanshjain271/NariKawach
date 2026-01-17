@@ -21,15 +21,16 @@ export async function calculateRisk(payload: RiskPayload) {
       payload.crowdDensity * 0.3 +
       (10 - payload.lightingScore) * 0.3;
 
-    let riskLevel: "LOW" | "MEDIUM" | "HIGH" = "LOW";
+    let risk_level = "Low";
 
-    if (score > 7) riskLevel = "HIGH";
-    else if (score > 4) riskLevel = "MEDIUM";
+    if (score > 7) risk_level = "High";
+    else if (score > 4) risk_level = "Medium";
 
     return {
       user_id: payload.user_id,
-      riskLevel,
+      risk_level,
       confidence: 0.6,
+      reason: "Calculated using fallback rule engine",
       source: "fallback-rule-engine"
     };
   }
@@ -64,8 +65,9 @@ export async function calculateRisk(payload: RiskPayload) {
     // 🟡 ML failed → fallback automatically
     return {
       user_id: payload.user_id,
-      riskLevel: "MEDIUM",
+      risk_level: "Medium",
       confidence: 0.5,
+      reason: "ML service unavailable, using fallback",
       source: "ml-fallback"
     };
   }
