@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node --loader ts-node/esm server.ts"
+    "dev": "node --loader ts-node/esm server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.90.1",

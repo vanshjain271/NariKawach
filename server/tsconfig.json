@@ -3,8 +3,12 @@
     "target": "ES2020",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": ".",
     "esModuleInterop": true,
     "strict": false,
     "skipLibCheck": true
-  }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
