@@ -21,10 +21,10 @@ export async function calculateRisk(payload: RiskPayload) {
       payload.crowdDensity * 0.3 +
       (10 - payload.lightingScore) * 0.3;
 
-    let risk_level = "Low";
+    let risk_level = "low";
 
-    if (score > 7) risk_level = "High";
-    else if (score > 4) risk_level = "Medium";
+    if (score > 7) risk_level = "high";
+    else if (score > 4) risk_level = "medium";
 
     return {
       user_id: payload.user_id,
@@ -65,7 +65,7 @@ export async function calculateRisk(payload: RiskPayload) {
     // 🟡 ML failed → fallback automatically
     return {
       user_id: payload.user_id,
-      risk_level: "Medium",
+      risk_level: "medium",
       confidence: 0.5,
       reason: "ML service unavailable, using fallback",
       source: "ml-fallback"

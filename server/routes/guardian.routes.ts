@@ -11,10 +11,10 @@ router.post("/add", async (req, res) => {
 
   const { data, error } = await supabase.from("guardians").insert([
     { user_id, name, phone }
-  ]);
+  ]).select();
 
   if (error) return res.status(400).json(error);
-  res.json(data);
+  res.json(data[0]);
 });
 
 /**

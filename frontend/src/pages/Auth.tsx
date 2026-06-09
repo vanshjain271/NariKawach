@@ -7,13 +7,22 @@ export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
+
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
 
     try {
       let result;
@@ -29,6 +38,9 @@ export default function Auth() {
         result = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth`,
+          },
         });
       }
 
@@ -36,9 +48,18 @@ export default function Auth() {
         throw result.error;
       }
 
+      // If sign up succeeds but no session is returned, it means email confirmation is active
+      if (!isLogin && !result.data.session) {
+        setSuccess("Registration successful! Please check your email to verify your account.");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setIsLogin(true); // Switch to login view
+        return;
+      }
+
       // Save user session
       localStorage.setItem("nk_user", JSON.stringify(result.data.user));
-
       navigate("/home");
     } catch (err: any) {
       setError(err.message || "Authentication failed");
@@ -61,6 +82,10 @@ export default function Auth() {
           <p className="text-sm text-red-500 text-center">{error}</p>
         )}
 
+        {success && (
+          <p className="text-sm text-green-600 text-center font-medium bg-green-50 p-2 rounded border border-green-200">{success}</p>
+        )}
+
         <input
           type="email"
           placeholder="Email"
@@ -79,6 +104,17 @@ export default function Auth() {
           required
         />
 
+        {!isLogin && (
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="w-full border p-2 rounded"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        )}
+
         <button
           type="submit"
           disabled={loading}
@@ -91,7 +127,13 @@ export default function Auth() {
           {isLogin ? "New user?" : "Already have an account?"}{" "}
           <button
             type="button"
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setError("");
+              setSuccess("");
+              setPassword("");
+              setConfirmPassword("");
+            }}
             className="text-primary underline"
           >
             {isLogin ? "Sign up" : "Login"}

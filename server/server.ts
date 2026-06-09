@@ -14,8 +14,21 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  "https://nari-kawach.vercel.app",
+  "https://nari-kawach-zeta.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000"
+];
+
 app.use(cors({
-  origin: ["https://nari-kawach.vercel.app"],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"), false);
+  },
   credentials: true
 }));
 
