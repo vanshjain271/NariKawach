@@ -187,7 +187,7 @@ const LocationMap = ({ isTracking, onLocationUpdate, userId }: LocationMapProps)
      React to HIGH risk
   -------------------------------- */
   useEffect(() => {
-    if (risk?.risk_level === "HIGH") {
+    if (risk?.risk_level?.toLowerCase() === "high") {
       alert("⚠️ High Risk Area Detected. Stay Alert!");
     }
   }, [risk]);
@@ -229,12 +229,13 @@ const LocationMap = ({ isTracking, onLocationUpdate, userId }: LocationMapProps)
     <div className="aspect-video rounded-2xl overflow-hidden border shadow-soft relative">
       {risk && (
         <div
-          className={`absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-xs font-medium ${risk.risk_level === "HIGH"
-            ? "bg-red-600 text-white"
-            : risk.risk_level === "MEDIUM"
-              ? "bg-yellow-500 text-black"
-              : "bg-green-600 text-white"
-            }`}
+          className={`absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-xs font-medium ${
+            risk.risk_level?.toLowerCase() === "high"
+              ? "bg-red-600 text-white"
+              : risk.risk_level?.toLowerCase() === "medium"
+                ? "bg-yellow-500 text-black"
+                : "bg-green-600 text-white"
+          }`}
         >
           Risk: {risk.risk_level}
         </div>
