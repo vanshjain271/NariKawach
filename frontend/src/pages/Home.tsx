@@ -108,7 +108,17 @@ const Home = () => {
       setCurrentTripId(data.id);
       setIsTripActive(true);
       setSafetyStatus("monitoring");
-      navigate("/onboarding");
+
+      // Check if the user already has at least one guardian
+      const { data: guardians } = await api.get(`/guardian/${user.id}`);
+      if (guardians && guardians.length > 0) {
+        toast({
+          title: "Trip Monitoring Started",
+          description: "NariKawach is keeping you safe.",
+        });
+      } else {
+        navigate("/onboarding");
+      }
     } catch {
       toast({
         title: "Trip Error",

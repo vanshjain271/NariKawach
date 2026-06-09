@@ -6,7 +6,8 @@ import {
   Phone,
   CheckCircle,
   User,
-  ArrowLeft
+  ArrowLeft,
+  MessageCircle
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -30,8 +31,17 @@ const Emergency = () => {
       navigate("/auth");
     } else {
       fetchGuardians(user.id);
+      triggerBackendAlert(user.id);
     }
   }, [navigate]);
+
+  const triggerBackendAlert = async (userId: string) => {
+    try {
+      await api.post("/alert/send", { user_id: userId });
+    } catch (error) {
+      console.error("Failed to notify backend of emergency", error);
+    }
+  };
 
   const fetchGuardians = async (userId: string) => {
     try {
@@ -144,12 +154,22 @@ const Emergency = () => {
                       </div>
                     </div>
 
-                    <a
-                      href={`tel:${g.phone}`}
-                      className="w-10 h-10 rounded-full bg-safe flex items-center justify-center"
-                    >
-                      <Phone className="w-5 h-5 text-safe-foreground" />
-                    </a>
+                    <div className="flex gap-2">
+                      <a
+                        href={`sms:${g.phone}?body=EMERGENCY! I need help. Track my live location on NariKawach: ${window.location.origin}/home`}
+                        className="w-10 h-10 rounded-full bg-primary flex items-center justify-center animate-pulse"
+                        title="Send SOS SMS"
+                      >
+                        <MessageCircle className="w-5 h-5 text-primary-foreground" />
+                      </a>
+                      <a
+                        href={`tel:${g.phone}`}
+                        className="w-10 h-10 rounded-full bg-safe flex items-center justify-center"
+                        title="Call Guardian"
+                      >
+                        <Phone className="w-5 h-5 text-safe-foreground" />
+                      </a>
+                    </div>
                   </div>
                 ))
               ) : (
