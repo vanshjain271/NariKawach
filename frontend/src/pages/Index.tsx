@@ -1,8 +1,18 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Shield, Users, MapPin, Bell, ArrowRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("nk_user");
+    if (user) {
+      navigate("/home");
+    }
+  }, [navigate]);
+
   return (
     <div className="min-h-screen gradient-hero">
       {/* Navigation */}

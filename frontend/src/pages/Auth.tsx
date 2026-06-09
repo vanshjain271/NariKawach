@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../integrations/supabase/client";
 
 export default function Auth() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("nk_user");
+    if (user) {
+      navigate("/home");
+    }
+  }, [navigate]);
+
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
